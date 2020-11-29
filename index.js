@@ -51,11 +51,10 @@ const products = [
 ]
 
 
-
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
-app.use(jwtCheck)
+
 
 app.get('/', (req, res) => {res.send("Welcome to zaci's api for software security")})
 
