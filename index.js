@@ -6,7 +6,7 @@ const cors = require('cors')
 const jwt = require('express-jwt')
 const jwks = require('jwks-rsa')
 const app = express()
-const PORT = 4000
+const PORT = process.env.port || 4000
 
 const jwtCheck = jwt({
     secret: jwks.expressJwtSecret({
@@ -20,7 +20,7 @@ const jwtCheck = jwt({
   algorithms: ['RS256']
 });
 
-const products = [d 
+const products = [ 
 {
     id: 1,
     name: "Adidas Stan Smith",
