@@ -63,5 +63,6 @@ app.get('/products', (req, res) => {
     res.send(products)
 })
 
+
 //listen on the port
 app.listen(PORT, () => {console.log(`api listening on port ${PORT}`)})
