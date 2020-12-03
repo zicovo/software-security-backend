@@ -58,7 +58,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {res.send("Welcome to zaci's api for software security")})
 
-app.get('/products', jwtCheck, (req, res) => {
+app.get('/products', (req, res) => {
     console.log('products requested')
     res.send(products)
 })
