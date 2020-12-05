@@ -2,8 +2,25 @@
 const express = require('express')
 const router = express.Router()
 
-router.get('/', (req, res) => { res.send('products requested!')})
+const productController = require('../Controllers/product.controller')
 
-router.get('/schoenen', (req, res) => { res.send('schoenen requested!')})
+//get all products
+router.get('/', productController.findAll)
+
+//create a product
+router.post('/', productController.create)
+
+//find one product by id
+router.get('/:id', productController.findOne)
+
+//update one product by id
+router.put('/:id', productController.update)
+
+//delete one product by id
+router.delete('/:id', productController.delete)
+
+
+
+
 
 module.exports = router

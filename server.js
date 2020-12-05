@@ -15,16 +15,16 @@ app.use(express.urlencoded({ extended: true }));
 
 //import product related routes
 const products = require('./Routes/Products')
-app.use('/products', products)
+app.use('/api/products', products)
 
 //db connection
-const db = require('./Models')
+const db = require('./Models/index')
 db.sequelize.sync()
 
 //root
 app.get('/', async (req, res) => {
     try {
-        await connection.authenticate();
+        await db.sequelize.authenticate();
         console.log('Connection has been established successfully.');
       } catch (error) {
         console.error('Unable to connect to the database:', error);

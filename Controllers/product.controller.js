@@ -7,7 +7,7 @@ const Op = db.Sequelize.Op
 exports.create = async (req, res) => {
   //validate request
 
-  if(!req.body.title) {
+  if(!req.body.ProductTitle) {
       res.status(400).send({message: 'Can not be empty!'})
       return
   }
@@ -38,11 +38,11 @@ exports.create = async (req, res) => {
 // Retrieve all products from the database.
 exports.findAll = async (req, res) => {
     //find every product that matches a part of the title
-    const ProductTitle = req.query.ProductTitle;
-    let condition = ProductTitle ? { ProductTitle: { [Op.like]: `%${ProductTitle}%` } } : null;
+    // const ProductTitle = req.query.ProductTitle;
+    // let condition = ProductTitle ? { ProductTitle: { [Op.like]: `%${ProductTitle}%` } } : null;
   
     try {
-        const data = await Product.findAll({ where: condition })
+        const data = await Product.findAll()
         res.send(data)
     } catch (error) {
         res.status(500).send({message: error.message || 'Something went wrong while fetching the products.'})
@@ -55,16 +55,16 @@ exports.findOne = async (req, res) => {
   const id  = req.params.id
 
   try {
-    const data = await Product.findById(id) 
+    const data = await Product.findByPk(id) 
     res.send(data)
   } catch (error) {
-    res.status(500).send({message: `Something went wrong while retreiving the product with id: ${id}` })
+    res.status(500).send({message: error.message || `Something went wrong while retreiving the product with id: ${id}` })
   }
 
 };
 
 // Update a product by the id in the request
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
     const id  = req.params.id
 
     try {
@@ -74,7 +74,7 @@ exports.update = (req, res) => {
 
         if(data == 1){res.send({message: `The product with the id of ${id}, was succesfully updated!`})}
         
-        else{res.send({message = `No records where updated, there are no products with the id of ${id}`})}
+        else{res.send({message: `No records where updated, there are no products with the id of ${id}`})}
 
     } catch (error) {
         res.status(500).send({message: `An error occured while updating!`})
@@ -93,7 +93,7 @@ exports.delete = async (req, res) => {
     
     if(data == 1){res.send({message: `The product with the id of ${id}, was succesfully deleted!`})}
         
-        else{res.send({message = `No records where deleted, there are no products with the id of ${id}`})}
+        else{res.send({message: `No records where deleted, there are no products with the id of ${id}`})}
 
     } catch (error) {
         res.status(500).send({message: `An error occured while deleting!`})

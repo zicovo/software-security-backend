@@ -1,6 +1,3 @@
-const { Sequelize } = require("sequelize/types");
-const { sequelize } = require("./index.Js");
-
 module.exports = (sequelize, Sequelize) => {
     const Product = sequelize.define('product', {
         ProductTitle: {

@@ -1,5 +1,6 @@
 //get the client
 const { Sequelize } = require('sequelize')
+const products = require('./product.model')
 
 //create the connection to the database
 
@@ -14,6 +15,9 @@ const db = {}
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
-db.products = require('./product.model')
+//assign models
+db.products = products(sequelize, Sequelize)
+
+
 
 module.exports = db
