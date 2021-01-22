@@ -17,19 +17,10 @@ app.use(express.urlencoded({ extended: true }));
 const products = require('./Routes/Products')
 app.use('/api/products', products)
 
-//db connection
-const db = require('./Models/index')
-db.sequelize.sync()
+
 
 //root
 app.get('/', async (req, res) => {
-    try {
-        await db.sequelize.authenticate();
-        console.log('Connection has been established successfully.');
-      } catch (error) {
-        console.error('Unable to connect to the database:', error);
-      }
-
     res.send("Welcome to zaci's api for software security")
 })
 

@@ -16,9 +16,12 @@
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
     "express-openid-connect": "^2.0.0",
-    "jwks-rsa": "^1.11.0",
+    "jwks-rsa": "^1.12.2",
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.6",
     "sequelize": "^6.3.5"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.2.0"
   }
 }

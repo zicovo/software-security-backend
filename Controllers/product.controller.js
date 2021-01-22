@@ -25,7 +25,7 @@ exports.create = async (req, res) => {
 
   try {
      const data = await Product.create(product)
-     res.send(data)
+     res.status(201).send(data)
   } catch (error) {
       res.status(500).send({
           message: 'An error occured while creating a product!'
@@ -37,13 +37,10 @@ exports.create = async (req, res) => {
 
 // Retrieve all products from the database.
 exports.findAll = async (req, res) => {
-    //find every product that matches a part of the title
-    // const ProductTitle = req.query.ProductTitle;
-    // let condition = ProductTitle ? { ProductTitle: { [Op.like]: `%${ProductTitle}%` } } : null;
-  
+    
     try {
         const data = await Product.findAll()
-        res.send(data)
+        res.status(200).send(data)
     } catch (error) {
         res.status(500).send({message: error.message || 'Something went wrong while fetching the products.'})
     }
@@ -56,7 +53,7 @@ exports.findOne = async (req, res) => {
 
   try {
     const data = await Product.findByPk(id) 
-    res.send(data)
+    res.status(200).send(data)
   } catch (error) {
     res.status(500).send({message: error.message || `Something went wrong while retreiving the product with id: ${id}` })
   }
@@ -72,7 +69,7 @@ exports.update = async (req, res) => {
         
         //data will be 1 if succesfully updated
 
-        if(data == 1){res.send({message: `The product with the id of ${id}, was succesfully updated!`})}
+        if(data == 1){res.status(200).send({message: `The product with the id of ${id}, was succesfully updated!`})}
         
         else{res.send({message: `No records where updated, there are no products with the id of ${id}`})}
 
@@ -93,7 +90,7 @@ exports.delete = async (req, res) => {
     
     if(data == 1){res.send({message: `The product with the id of ${id}, was succesfully deleted!`})}
         
-        else{res.send({message: `No records where deleted, there are no products with the id of ${id}`})}
+        else{res.status(200).send({message: `No records where deleted, there are no products with the id of ${id}`})}
 
     } catch (error) {
         res.status(500).send({message: `An error occured while deleting!`})
