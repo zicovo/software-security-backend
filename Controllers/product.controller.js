@@ -1,26 +1,24 @@
-const db = require('../Models')
-const Product = db.products
-const Op = db.Sequelize.Op
+const models = require('../models/index')
+const Product = models.Products
 
 
 // Create and Save a new Product
 exports.create = async (req, res) => {
   //validate request
 
-  if(!req.body.ProductTitle) {
+  if(!req.body.name) {
       res.status(400).send({message: 'Can not be empty!'})
       return
   }
   
-
   //if request is validate, create a product in db
 
   //get properties out of the request object
   const product = {
-      ProductTitle: req.body.ProductTitle,
-      ProductDescription: req.body.ProductDescription,
-      ProductPrice: req.body.ProductPrice,
-      ProductImageSrc: req.body.ProductImageSrc,
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      img: req.body.img,
   }
 
   try {
@@ -28,7 +26,7 @@ exports.create = async (req, res) => {
      res.status(201).send(data)
   } catch (error) {
       res.status(500).send({
-          message: 'An error occured while creating a product!'
+          message: `An error occured while creating a product! ${error}`
       })
   }
 

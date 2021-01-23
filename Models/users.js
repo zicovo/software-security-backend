@@ -13,14 +13,15 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
 
       Users.belongsToMany(models.Roles, {through: 'User_roles', foreignKey: 'userId'})
-      Users.belongsToMany(models.Purchase, {through: 'Purchases', foreignKey: 'userId'})
+      Users.belongsToMany(models.Products, {through: 'Purchases', foreignKey: 'userId'})
       
     }
   };
   Users.init({
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
-    email: DataTypes.STRING
+    email: DataTypes.STRING,
+    completedProfile: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Users',

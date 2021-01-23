@@ -16,6 +16,9 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
+      completedProfile:{
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

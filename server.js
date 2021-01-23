@@ -17,6 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 const products = require('./Routes/Products')
 app.use('/api/products', products)
 
+//import product related routes
+const users = require('./Routes/Users')
+app.use('/api/users', users)
 
 
 //root
