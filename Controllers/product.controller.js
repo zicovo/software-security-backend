@@ -41,7 +41,7 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
     
     try {
-        const data = await Product.findAll({include: ['User']})
+        const data = await Product.findAll()
         res.status(200).send(data)
     } catch (error) {
         res.send({message: error.message || 'Something went wrong while fetching the products.'})
@@ -51,9 +51,11 @@ exports.findAll = async (req, res) => {
 
 exports.findMyProducts = async (req, res) => {
     try {
-        const data = await Product.findAll()
+        const data = await Product.findAll({include: ['User'], where: {userId: req.params.userId}})
+        res.status(200).send(data)
         
     } catch (error) {
+        res.send({message: error.message || 'Something went wrong while fetching the products.'})
         
     }
 }
@@ -80,7 +82,7 @@ exports.update = async (req, res) => {
         
         //data will be 1 if succesfully updated
 
-        if(data == 1){res.status(200).send({message: `The product with the id of ${id}, was succesfully updated!`})}
+        if(data == 1){res.send(data)}
         
         else{res.send({message: `No records where updated, there are no products with the id of ${id}`})}
 
@@ -92,8 +94,9 @@ exports.update = async (req, res) => {
 
 // Delete a product with the specified id in the request
 exports.delete = async (req, res) => {
+
   
-    const id = req.body.id
+    const id = req.params.id
 
     try {
     //data will be the number of destroyed rows
@@ -101,10 +104,10 @@ exports.delete = async (req, res) => {
     
     if(data == 1){res.send({message: `The product with the id of ${id}, was succesfully deleted!`})}
         
-        else{res.status(200).send({message: `No records where deleted, there are no products with the id of ${id}`})}
+        else{res.send({message: `No records where deleted, there are no products with the id of ${id}`})}
 
     } catch (error) {
-        res.status(500).send({message: `An error occured while deleting!`})
+        res.send({message: `An error occured while deleting!`})
     }
 
 };
