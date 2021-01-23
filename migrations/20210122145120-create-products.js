@@ -20,6 +20,13 @@ module.exports = {
       img: {
         type: Sequelize.STRING
       },
+      userId: {
+        type: Sequelize.STRING,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

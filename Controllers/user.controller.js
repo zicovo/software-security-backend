@@ -75,7 +75,7 @@ exports.findAll = async (req, res) => {
         const data = await User.findAll()
         res.status(200).send(data)
     } catch (error) {
-        res.status(500).send({message: error.message || 'Something went wrong while fetching the users.'})
+        res.send({message: error.message || 'Something went wrong while fetching the users.'})
     }
 
 };

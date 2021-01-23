@@ -1,11 +1,14 @@
-const models = require('../models/index')
+const models = require('../models/index');
+const users = require('../models/users');
 const Product = models.Products
 
 
 // Create and Save a new Product
 exports.create = async (req, res) => {
-  //validate request
 
+    console.log('wazaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+  //validate request
+    console.log
   if(!req.body.name) {
       res.status(400).send({message: 'Can not be empty!'})
       return
@@ -19,13 +22,14 @@ exports.create = async (req, res) => {
       description: req.body.description,
       price: req.body.price,
       img: req.body.img,
+      userId: req.body.user_id
   }
-
+  console.log(product)
   try {
      const data = await Product.create(product)
      res.status(201).send(data)
   } catch (error) {
-      res.status(500).send({
+      res.send({
           message: `An error occured while creating a product! ${error}`
       })
   }
@@ -37,13 +41,22 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
     
     try {
-        const data = await Product.findAll()
+        const data = await Product.findAll({include: ['User']})
         res.status(200).send(data)
     } catch (error) {
-        res.status(500).send({message: error.message || 'Something went wrong while fetching the products.'})
+        res.send({message: error.message || 'Something went wrong while fetching the products.'})
     }
 
 };
+
+exports.findMyProducts = async (req, res) => {
+    try {
+        const data = await Product.findAll()
+        
+    } catch (error) {
+        
+    }
+}
 
 // Find a single product with an id
 exports.findOne = async (req, res) => {

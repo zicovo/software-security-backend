@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Products.belongsToMany(models.Users, {through: 'Purchases', foreignKey: 'productId'})
+      Products.belongsTo(models.Users)
+      Products.belongsTo(models.Users, {foreignKey: 'userId'})
+
 
     }
   };
@@ -19,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.DOUBLE,
-    img: DataTypes.STRING
+    img: DataTypes.STRING,
+    userId: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Products',
