@@ -1,6 +1,6 @@
 const models = require('../models/index');
-const users = require('../models/users');
 const Product = models.Products
+const User = models.Users
 
 
 // Create and Save a new Product
@@ -77,14 +77,31 @@ exports.findOne = async (req, res) => {
 exports.update = async (req, res) => {
     const id  = req.params.id
 
+    const _userId = req.body.userId
+
+    console.log("BODYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
+
     try {
-        const data = await Product.update(req.body, {where: {id: id}})
+
+         //verify ownership of record
+
+        const { userId } = await Product.findByPk(id) 
+
+
+        if(userId == _userId){
+
+        const data = await Product.update(req.body.product, {where: {id: id}})
         
         //data will be 1 if succesfully updated
 
         if(data == 1){res.send(data)}
         
         else{res.send({message: `No records where updated, there are no products with the id of ${id}`})}
+
+        }
+        else {
+            res.send({message: `Method not allowed, you are not allowed to update this record`})
+        }
 
     } catch (error) {
         res.status(500).send({message: `An error occured while updating!`})
@@ -95,10 +112,20 @@ exports.update = async (req, res) => {
 // Delete a product with the specified id in the request
 exports.delete = async (req, res) => {
 
-  
+
     const id = req.params.id
 
+    const _userId = req.body.userId
+
     try {
+    
+    //verify ownership of record
+
+    const { userId } = await Product.findByPk(id) 
+
+
+    if(userId == _userId){
+
     //data will be the number of destroyed rows
     const data = await Product.destroy({where: {id: id}})
     
@@ -106,8 +133,16 @@ exports.delete = async (req, res) => {
         
         else{res.send({message: `No records where deleted, there are no products with the id of ${id}`})}
 
+    }
+    else {
+        res.send({message: `Method not allowed, you are not allowed to delete this record.`})
+    }
+
     } catch (error) {
         res.send({message: `An error occured while deleting!`})
     }
 
-};
+}
+
+
+
