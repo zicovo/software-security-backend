@@ -1,10 +1,10 @@
-import { Products, Users } from '../models/index';
-const Product = Products
-const User = Users
+const models = require('../../models/index');
+const Product = models.Products
+const User = models.Users
 
 
 // Create and Save a new Product
-export async function create(req, res) {
+exports.create = async (req, res) => {
 
     console.log('wazaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
   //validate request
@@ -35,10 +35,10 @@ export async function create(req, res) {
   }
 
 
-}
+};
 
 // Retrieve all products from the database.
-export async function findAll(req, res) {
+exports.findAll = async (req, res) => {
     
     try {
         const data = await Product.findAll()
@@ -47,9 +47,9 @@ export async function findAll(req, res) {
         res.send({message: error.message || 'Something went wrong while fetching the products.'})
     }
 
-}
+};
 
-export async function findMyProducts(req, res) {
+exports.findMyProducts = async (req, res) => {
     try {
         const data = await Product.findAll({include: ['User'], where: {userId: req.params.userId}})
         res.status(200).send(data)
@@ -61,7 +61,7 @@ export async function findMyProducts(req, res) {
 }
 
 // Find a single product with an id
-export async function findOne(req, res) {
+exports.findOne = async (req, res) => {
   const id  = req.params.id
 
   try {
@@ -71,10 +71,10 @@ export async function findOne(req, res) {
     res.status(500).send({message: error.message || `Something went wrong while retreiving the product with id: ${id}` })
   }
 
-}
+};
 
 // Update a product by the id in the request
-export async function update(req, res) {
+exports.update = async (req, res) => {
     const id  = req.params.id
 
     const _userId = req.body.userId
@@ -107,42 +107,42 @@ export async function update(req, res) {
         res.status(500).send({message: `An error occured while updating!`})
     }
   
-}
+};
 
 // Delete a product with the specified id in the request
-const _delete = async (req, res) => {
+exports.delete = async (req, res) => {
 
 
-    const id = req.params.id;
+    const id = req.params.id
 
-    const _userId = req.body.userId;
+    const _userId = req.body.userId
 
     try {
+    
+    //verify ownership of record
 
-        //verify ownership of record
-        const { userId } = await Product.findByPk(id);
+    const { userId } = await Product.findByPk(id) 
 
 
-        if (userId == _userId) {
+    if(userId == _userId){
 
-            //data will be the number of destroyed rows
-            const data = await Product.destroy({ where: { id: id } });
+    //data will be the number of destroyed rows
+    const data = await Product.destroy({where: {id: id}})
+    
+    if(data == 1){res.send({message: `The product with the id of ${id}, was succesfully deleted!`})}
+        
+        else{res.send({message: `No records where deleted, there are no products with the id of ${id}`})}
 
-            if (data == 1) { res.send({ message: `The product with the id of ${id}, was succesfully deleted!` }); }
-
-            else { res.send({ message: `No records where deleted, there are no products with the id of ${id}` }); }
-
-        }
-        else {
-            res.send({ message: `Method not allowed, you are not allowed to delete this record.` });
-        }
-
-    } catch (error) {
-        res.send({ message: `An error occured while deleting!` });
+    }
+    else {
+        res.send({message: `Method not allowed, you are not allowed to delete this record.`})
     }
 
-};
-export { _delete as delete };
+    } catch (error) {
+        res.send({message: `An error occured while deleting!`})
+    }
+
+}
 
 
 
