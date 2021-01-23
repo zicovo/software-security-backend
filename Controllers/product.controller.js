@@ -1,4 +1,4 @@
-const models = require('../models/index');
+const models = require('../Models/index');
 const Product = models.Products
 const User = models.Users
 

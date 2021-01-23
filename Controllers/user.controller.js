@@ -1,4 +1,4 @@
-const models = require('../models/index')
+const models = require('../Models/index')
 const User = models.Users
 
 
