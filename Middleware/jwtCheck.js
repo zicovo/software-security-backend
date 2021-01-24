@@ -1,17 +1,16 @@
 const jwt = require('express-jwt')
 const jwks = require('jwks-rsa')
-const { auth } = require('express-openid-connect');
-const { requiresAuth } = require('express-openid-connect');
+require('dotenv').config()
 
 const jwtCheck = jwt({
     secret: jwks.expressJwtSecret({
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 5,
-        jwksUri: 'https://dev-rlt7-zh1.eu.auth0.com/.well-known/jwks.json'
+        jwksUri: process.env.JWKS_URI
   }),
-  audience: 'https://software-sec-zico-api',
-  issuer: 'https://dev-rlt7-zh1.eu.auth0.com/',
+  audience: process.env.AUTH0_AUDIENCE,
+  issuer: process.env.AUTH0_ISSUER,
   algorithms: ['RS256']
 });
 

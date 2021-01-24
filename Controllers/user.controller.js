@@ -1,6 +1,6 @@
 const models = require('../Models/index')
 const User = models.Users
-const fs = require('fs')
+require('dotenv').config()
 
 
 // Create and Save a new User
@@ -142,15 +142,32 @@ exports.update = async (req, res) => {
   
 };
 
+// const deleteAuth0User = async (sub) => {
+//     const access_token = await getToken();
+//     const options = {
+//       method: 'DELETE',
+//       url: `${process.env.AUTH0_ISSUER}api/v2/users/${sub}`,
+//       headers: {
+//         Authorization: `Bearer ${access_token}`,
+//         Accept: 'application/json',
+//       },
+//     };
+//     const response = await axios.request(options);
+//     if (response.status === 204) {
+//       return true;
+//     }
+//     throw Error('Something went wrong while trying to delete user a in auth0.');
+//   }
+
 // Delete a user with the specified id in the request
 exports.delete = async (req, res) => {
-  
+
+  console.log(req.user)
     const id = req.params.id
 
     try {
     //data will be the number of destroyed rows
     const data = await User.destroy({where: {id: id}})
-    
     if(data == 1){res.send({message: `The user with the id of ${id}, was succesfully deleted!`})}
         
         else{res.status(200).send({message: `No records where deleted, there are no users with the id of ${id}`})}
