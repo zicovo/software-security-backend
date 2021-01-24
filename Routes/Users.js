@@ -16,7 +16,7 @@ const corsOptions = {
   };
 
 //get all users
-router.get('/', cors(corsOptions), jwtCheck, userController.findAll)
+router.get('/', cors(corsOptions), jwtCheck, isAdmin, userController.findAll)
 
 //create a user
 router.post('/', cors(corsOptions), userController.create)
