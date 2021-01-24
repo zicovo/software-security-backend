@@ -2,6 +2,7 @@
 const express = require('express')
 const router = express.Router()
 const jwtCheck = require('../Middleware/jwtCheck')
+const isAdmin = require('../Middleware/isAdmin')
 const cors = require('cors')
 
 const userController = require('../Controllers/user.controller')
@@ -45,9 +46,8 @@ router.options(
   );
 
 
-
 //find one user by id
-router.get('/:id', cors(corsOptions),jwtCheck,  userController.findOne)
+router.get('/:id', cors(corsOptions),jwtCheck, userController.findOne)
 
 //update one user by id
 router.put('/:id', cors(corsOptions), jwtCheck, userController.update)
@@ -60,6 +60,19 @@ router.options(
     cors({ ...corsOptions, methods: "GET, PUT, DELETE, OPTIONS" })
   );
 
+router.get('/withRoles/:id',cors(corsOptions), jwtCheck, userController.findUserAndRoles)
+
+router.options(
+  "/withRoles/:id",
+  cors({ ...corsOptions, methods: "GET, PUT, DELETE, OPTIONS" })
+);
+
+router.get('/getAllUserData/:id', cors(corsOptions), jwtCheck, userController.getAllUserData)
+
+router.options(
+  "/getAllUserData/:id",
+  cors({ ...corsOptions, methods: "GET, OPTIONS" })
+);
 
 
 module.exports = router

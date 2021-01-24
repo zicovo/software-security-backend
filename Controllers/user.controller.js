@@ -1,5 +1,6 @@
 const models = require('../Models/index')
 const User = models.Users
+const fs = require('fs')
 
 
 // Create and Save a new User
@@ -104,8 +105,6 @@ exports.findOne = async (req, res) => {
 
 exports.isCompleted = async (req, res) => {
 
-    console.log('HALLO NIFFAUW')
-
     const id = req.params.id
 
     try {
@@ -146,7 +145,7 @@ exports.update = async (req, res) => {
 // Delete a user with the specified id in the request
 exports.delete = async (req, res) => {
   
-    const id = req.body.id
+    const id = req.params.id
 
     try {
     //data will be the number of destroyed rows
@@ -161,3 +160,36 @@ exports.delete = async (req, res) => {
     }
 
 };
+
+exports.findUserAndRoles = async(req, res) => {
+
+    const id = req.params.id
+    console.log(id)
+    try {
+        const user = await User.findByPk(id, {include: ['Roles']})
+        res.send(user)
+    } catch (error) {
+        res.send(error)
+    }
+}
+
+exports.getAllUserData = async(req, res) =>{
+
+    const id  = req.params.id
+  
+  try {
+    const data = await User.findByPk(id, {include: ['Products']}) 
+
+    console.log('AL USERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR')
+    console.log(data)
+    
+    const test = JSON.stringify(data)
+    res.send(test)
+    
+
+  } catch (error) {
+    res.status(500).send({
+        message: error.message || `Something went wrong while retreiving the user with id: ${id}`
+      })
+  }
+}

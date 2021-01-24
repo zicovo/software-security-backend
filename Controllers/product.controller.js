@@ -144,5 +144,24 @@ exports.delete = async (req, res) => {
 
 }
 
+exports.deleteProductAdmin = async (req, res) => {
+
+    const id = req.params.id
+
+    try {
+
+    //data will be the number of destroyed rows
+    const data = await Product.destroy({where: {id: id}})
+    
+    if(data == 1){res.send({message: `The product with the id of ${id}, was succesfully deleted!`})}
+        
+        else{res.status(500).send({message: `No records where deleted, there are no products with the id of ${id}`})}
+
+    } catch (error) {
+        res.status(500).send({message: `An error occured while deleting!`})
+    }
+    
+}
+
 
 

@@ -5,6 +5,7 @@ const cors = require('cors')
 
 const productController = require('../Controllers/product.controller')
 const jwtCheck = require('../Middleware/jwtCheck')
+const isAdmin = require('../Middleware/isAdmin')
 
 
 //cors options
@@ -26,11 +27,6 @@ router.options(
     cors({ ...corsOptions, methods: "GET, POST, OPTIONS" })
   );
 
-// router.all("/", (req, res) => {
-//     res.set("Allow", "GET, POST, OPTIONS");
-//     res.status(405).end();
-//   });
-
 //find products linked to user
 router.get('/:userId', cors(corsOptions),jwtCheck, productController.findMyProducts)
 
@@ -39,10 +35,6 @@ router.options(
     cors({ ...corsOptions, methods: "GET, OPTIONS, PUT, DELETE" })
   );
 
-// router.all("/:userId", (req, res) => {
-//     res.set("Allow", "GET, PUT, DELETE, OPTIONS");
-//     res.status(405).end();
-//   });
 
 //find one product by id
 router.get('/:id', cors(corsOptions),productController.findOne)
@@ -58,10 +50,13 @@ router.options(
     cors({ ...corsOptions, methods: "GET, PUT, DELETE, OPTIONS" })
   );
 
-// router.all("/:id", (req, res) => {
-//     res.set("Allow", "GET, PUT, DELETE, OPTIONS");
-//     res.status(405).end();
-//   });
+  //admin route to delete any record
 
+  router.delete('/adminDelete/:id',cors(corsOptions), jwtCheck, isAdmin, productController.deleteProductAdmin)
+
+  router.options(
+    "/adminDelete/:id",
+    cors({ ...corsOptions, methods: "GET, PUT, DELETE, OPTIONS" })
+  );
 
 module.exports = router
