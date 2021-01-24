@@ -47,9 +47,6 @@ exports.init = async(req, res) => {
         completedProfile: false
     }
 
-    console.log('HIERE')
-    console.log(user)
-
     try {
         const check = await User.findByPk(user.id)
         console.log(check)

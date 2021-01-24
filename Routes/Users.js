@@ -2,30 +2,64 @@
 const express = require('express')
 const router = express.Router()
 const jwtCheck = require('../Middleware/jwtCheck')
+const cors = require('cors')
 
 const userController = require('../Controllers/user.controller')
 
+//cors options
+
+const corsOptions = {
+    allowedHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization, CSRF-Token, X-CSRF-Token",
+    credentials: true,
+  };
+
 //get all users
-router.get('/', userController.findAll)
+router.get('/', cors(corsOptions), jwtCheck, userController.findAll)
 
 //create a user
-router.post('/', userController.create)
+router.post('/', cors(corsOptions), userController.create)
 
-//find one user by id
-router.get('/:id',jwtCheck,  userController.findOne)
+router.options(
+    "/",
+    cors({ ...corsOptions, methods: "GET, POST, OPTIONS" })
+  );
+
 
 //initialise a user in de db
-router.post('/init',jwtCheck, userController.init)
+router.post('/init', cors(corsOptions), jwtCheck, userController.init)
+
+router.options(
+    "/init",
+    cors({ ...corsOptions, methods: "POST, OPTIONS" })
+  );
+
 
 //check if a user profile is completed
 
-router.get('/isCompleted/:id', jwtCheck, userController.isCompleted)
+router.get('/isCompleted/:id',cors(corsOptions), jwtCheck, userController.isCompleted)
+
+router.options(
+    "/isCompleted/:id",
+    cors({ ...corsOptions, methods: "GET, OPTIONS" })
+  );
+
+
+
+//find one user by id
+router.get('/:id', cors(corsOptions),jwtCheck,  userController.findOne)
 
 //update one user by id
-router.put('/:id',jwtCheck, userController.update)
+router.put('/:id', cors(corsOptions), jwtCheck, userController.update)
 
 //delete one user by id
-router.delete('/:id', userController.delete)
+router.delete('/:id',cors(corsOptions), jwtCheck, userController.delete)
+
+router.options(
+    "/:id",
+    cors({ ...corsOptions, methods: "GET, PUT, DELETE, OPTIONS" })
+  );
+
 
 
 module.exports = router

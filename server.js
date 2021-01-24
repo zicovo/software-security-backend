@@ -10,17 +10,17 @@ const jwtCheck = require('./Middleware/jwtCheck')
 
 //middlewares to handle json en urlencoded messages + overcome cors policy
 app.use(bodyParser.json());
-app.use(cors());
+// app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 //import product related routes
 const products = require('./Routes/Products')
 app.use('/api/products', products)
 
+
 //import product related routes
 const users = require('./Routes/Users')
 app.use('/api/users', users)
-
 
 //root
 app.get('/', async (req, res) => {

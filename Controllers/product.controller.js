@@ -6,7 +6,6 @@ const User = models.Users
 // Create and Save a new Product
 exports.create = async (req, res) => {
 
-    console.log('wazaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
   //validate request
     console.log
   if(!req.body.name) {
@@ -24,12 +23,13 @@ exports.create = async (req, res) => {
       img: req.body.img,
       userId: req.body.user_id
   }
+
   console.log(product)
   try {
      const data = await Product.create(product)
      res.status(201).send(data)
   } catch (error) {
-      res.send({
+      res.status(500).send({
           message: `An error occured while creating a product! ${error}`
       })
   }
@@ -44,7 +44,7 @@ exports.findAll = async (req, res) => {
         const data = await Product.findAll()
         res.status(200).send(data)
     } catch (error) {
-        res.send({message: error.message || 'Something went wrong while fetching the products.'})
+        res.status(500).send({message: error.message || 'Something went wrong while fetching the products.'})
     }
 
 };
@@ -55,7 +55,7 @@ exports.findMyProducts = async (req, res) => {
         res.status(200).send(data)
         
     } catch (error) {
-        res.send({message: error.message || 'Something went wrong while fetching the products.'})
+        res.status(500).send({message: error.message || 'Something went wrong while fetching the products.'})
         
     }
 }
@@ -77,9 +77,7 @@ exports.findOne = async (req, res) => {
 exports.update = async (req, res) => {
     const id  = req.params.id
 
-    const _userId = req.body.userId
-
-    console.log("BODYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
+    const _userId = req.user.sub
 
     try {
 
@@ -96,11 +94,11 @@ exports.update = async (req, res) => {
 
         if(data == 1){res.send(data)}
         
-        else{res.send({message: `No records where updated, there are no products with the id of ${id}`})}
+        else{res.status(500).send({message: `No records where updated, there are no products with the id of ${id}`})}
 
         }
         else {
-            res.send({message: `Method not allowed, you are not allowed to update this record`})
+            res.status(401).send({message: `Method not allowed, you are not allowed to update this record`})
         }
 
     } catch (error) {
@@ -115,13 +113,15 @@ exports.delete = async (req, res) => {
 
     const id = req.params.id
 
-    const _userId = req.body.userId
+    const _userId = req.user.sub
 
     try {
     
     //verify ownership of record
 
     const { userId } = await Product.findByPk(id) 
+    
+    console.log(userId)
 
 
     if(userId == _userId){
@@ -131,15 +131,15 @@ exports.delete = async (req, res) => {
     
     if(data == 1){res.send({message: `The product with the id of ${id}, was succesfully deleted!`})}
         
-        else{res.send({message: `No records where deleted, there are no products with the id of ${id}`})}
+        else{res.status(500).send({message: `No records where deleted, there are no products with the id of ${id}`})}
 
     }
     else {
-        res.send({message: `Method not allowed, you are not allowed to delete this record.`})
+        res.status(401).send({message: `Method not allowed, you are not allowed to delete this record.`})
     }
 
     } catch (error) {
-        res.send({message: `An error occured while deleting!`})
+        res.status(500).send({message: `An error occured while deleting!`})
     }
 
 }
